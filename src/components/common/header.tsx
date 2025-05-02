@@ -1,22 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useSelector } from "react-redux";
+import { usePathname, useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectIsAuthenticated,
-  selectCurrentUser,
+  logout,
 } from "@/Redex/features/authSlice";
+import { AppDispatch } from "@/Redex/store/store";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter(); 
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch<AppDispatch>();
+
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/pages/auth/login"); 
+  };
 
   return (
-    <header className="border-b">
+    <header className="border-b bg-background">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="font-bold text-xl">
           Notes App
@@ -27,21 +35,18 @@ export default function Header() {
 
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
-              <span className="text-sm hidden md:inline">
-                Welcome, {user?.username || "User"}
-              </span>
-              <Button asChild variant="outline" size="sm">
-                <Link href="/logout">Logout</Link>
+              <Button onClick={handleLogout} variant="outline" size="sm">
+                Logout
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              {pathname !== "/login" && (
+              {pathname !== "/pages/auth/login" && (
                 <Button asChild variant="ghost" size="sm">
                   <Link href="/pages/auth/login">Login</Link>
                 </Button>
               )}
-              {pathname !== "/register" && (
+              {pathname !== "/pages/auth/register" && (
                 <Button asChild variant="outline" size="sm">
                   <Link href="/pages/auth/register">Register</Link>
                 </Button>

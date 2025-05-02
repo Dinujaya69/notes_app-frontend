@@ -54,12 +54,15 @@ export default function RegisterPage() {
     }
 
     try {
-      const { confirmPassword, ...userData } = formData;
-      const result = await register(userData).unwrap();
+      const { username, email, password } = formData;
+      const result = await register({ username, email, password }).unwrap();
       dispatch(setCredentials(result));
       router.push("/pages/notes");
-    } catch (err: any) {
-      setError(err?.data?.message || "Registration failed. Please try again.");
+    } catch (err) {
+      const message =
+        (err as { data?: { message?: string } })?.data?.message ||
+        "Registration failed. Please try again.";
+      setError(message);
     }
   };
 
@@ -143,7 +146,10 @@ export default function RegisterPage() {
           <CardFooter className="flex justify-center">
             <p className="text-sm text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/pages/auth/login" className="text-primary font-medium">
+              <Link
+                href="/pages/auth/login"
+                className="text-primary font-medium"
+              >
                 Login
               </Link>
             </p>

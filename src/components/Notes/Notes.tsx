@@ -10,7 +10,6 @@ import {
   useDeleteNoteMutation,
 } from "@/Redex/features/noteApiSlice";
 import {
-  selectCurrentUser,
   selectIsAuthenticated,
   loadFromStorage,
 } from "@/Redex/features/authSlice";
@@ -40,7 +39,6 @@ export default function Notes() {
     setIsInitialized(true);
   }, [dispatch]);
 
-  const user = useSelector(selectCurrentUser);
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const {

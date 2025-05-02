@@ -47,9 +47,13 @@ export default function LoginPage() {
       const result = await login(formData).unwrap();
       dispatch(setCredentials(result));
       router.push("/pages/notes");
-    } catch (err: any) {
-      setError(err?.data?.message || "Failed to login. Please try again.");
+    } catch (err) {
+      const message =
+        (err as { data?: { message?: string } })?.data?.message ||
+        "Failed to login. Please try again.";
+      setError(message);
     }
+
   };
 
   return (
@@ -103,7 +107,7 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex justify-center">
             <p className="text-sm text-muted-foreground">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/pages/auth/register"
                 className="text-primary font-medium"
