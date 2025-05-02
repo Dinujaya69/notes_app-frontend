@@ -1,9 +1,9 @@
-// types/index.ts
 
 export interface User {
   _id: string;
   username: string;
   email: string;
+    password?: string;
 }
 
 export interface AuthState {
@@ -16,7 +16,7 @@ export interface Note {
   _id: string;
   title: string;
   content: string;
-  user: string; // user ID
+  user: string; 
   createdAt: string;
   updatedAt: string;
 }

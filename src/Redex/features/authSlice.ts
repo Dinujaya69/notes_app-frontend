@@ -1,17 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState, User } from "@/types";
 
-const token =
-  typeof window !== "undefined" ? localStorage.getItem("token") : null;
-const user =
-  typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("user") || "null")
-    : null;
 
 const initialState: AuthState = {
-  user,
-  token,
-  isAuthenticated: !!token,
+  user: null,
+  token: null,
+  isAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -26,20 +20,41 @@ const authSlice = createSlice({
       state.user = user;
       state.token = token;
       state.isAuthenticated = true;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+      }
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
+    },
+    loadFromStorage: (state) => {
+      if (typeof window !== "undefined") {
+        try {
+          const token = localStorage.getItem("token");
+          const userStr = localStorage.getItem("user");
+          const user = userStr ? JSON.parse(userStr) : null;
+
+          state.token = token;
+          state.user = user;
+          state.isAuthenticated = !!token;
+        } catch (e) {
+          console.error("Failed to parse localStorage auth data:", e);
+        }
+      }
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, loadFromStorage } = authSlice.actions;
 export default authSlice.reducer;
 
 export const selectCurrentUser = (state: { auth: AuthState }) =>

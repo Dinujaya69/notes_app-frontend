@@ -2,8 +2,8 @@
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { useLoginMutation } from  "@/Redex/features/authApiSlice";
-import { setCredentials } from  "@/Redex/features/authSlice";
+import { useLoginMutation } from "@/Redex/features/authApiSlice";
+import { setCredentials } from "@/Redex/features/authSlice";
 import { useAppDispatch } from "@/Redex/hooks";
 
 interface LoginFormData {
@@ -20,7 +20,6 @@ const LoginForm = () => {
 
   const dispatch = useAppDispatch();
   const router = useRouter();
-
   const [login, { isLoading }] = useLoginMutation();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +32,8 @@ const LoginForm = () => {
 
     try {
       const result = await login(formData).unwrap();
+
+      // ✅ Make sure the backend returns { user: {...}, token: "..." }
       dispatch(setCredentials(result));
       router.push("/notes");
     } catch (err: any) {
@@ -50,13 +51,13 @@ const LoginForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2" htmlFor="email">
+          <label htmlFor="email" className="block text-gray-700 mb-2">
             Email
           </label>
           <input
             type="email"
-            id="email"
             name="email"
+            id="email"
             value={formData.email}
             onChange={handleChange}
             required
@@ -65,13 +66,13 @@ const LoginForm = () => {
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2" htmlFor="password">
+          <label htmlFor="password" className="block text-gray-700 mb-2">
             Password
           </label>
           <input
             type="password"
-            id="password"
             name="password"
+            id="password"
             value={formData.password}
             onChange={handleChange}
             required
