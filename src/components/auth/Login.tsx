@@ -33,9 +33,8 @@ const LoginForm = () => {
     try {
       const result = await login(formData).unwrap();
 
-      // ✅ Make sure the backend returns { user: {...}, token: "..." }
       dispatch(setCredentials(result));
-      router.push("/notes");
+      router.push("/pages/notes");
     } catch (err: any) {
       setError(err?.data?.message || "Failed to login. Please try again.");
     }

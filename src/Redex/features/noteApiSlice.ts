@@ -15,7 +15,7 @@ export const notesApi = apiSlice.injectEndpoints({
     }),
     getNote: builder.query<Note, string>({
       query: (id) => `/notes/${id}`,
-      providesTags: (result, error, id) => [{ type: "Notes" as const, id }],
+      providesTags: (result, error, id) => [{ type: "Notes", id }],
     }),
     addNote: builder.mutation<Note, Partial<Note>>({
       query: (note) => ({
@@ -23,7 +23,7 @@ export const notesApi = apiSlice.injectEndpoints({
         method: "POST",
         body: note,
       }),
-      invalidatesTags: [{ type: "Notes" as const, id: "LIST" }],
+      invalidatesTags: [{ type: "Notes", id: "LIST" }],
     }),
     updateNote: builder.mutation<Note, Partial<Note> & { id: string }>({
       query: ({ id, ...note }) => ({
@@ -32,7 +32,8 @@ export const notesApi = apiSlice.injectEndpoints({
         body: note,
       }),
       invalidatesTags: (result, error, { id }) => [
-        { type: "Notes" as const, id },
+        { type: "Notes", id },
+        { type: "Notes", id: "LIST" },
       ],
     }),
     deleteNote: builder.mutation<{ message: string }, string>({
@@ -40,7 +41,10 @@ export const notesApi = apiSlice.injectEndpoints({
         url: `/notes/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [{ type: "Notes" as const, id: "LIST" }],
+      invalidatesTags: (result, error, id) => [
+        { type: "Notes", id },
+        { type: "Notes", id: "LIST" },
+      ],
     }),
   }),
 });
