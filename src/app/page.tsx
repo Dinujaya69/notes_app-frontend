@@ -11,10 +11,10 @@ export default function Home() {
           </h1>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link href="/login">Login</Link>
+              <Link href="/pages/auth/login">Login</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/register">Register</Link>
+              <Link href="/pages/auth/register">Register</Link>
             </Button>
           </div>
         </div>

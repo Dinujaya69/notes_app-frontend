@@ -30,9 +30,6 @@ export default function Header() {
               <span className="text-sm hidden md:inline">
                 Welcome, {user?.username || "User"}
               </span>
-              <Button asChild variant="ghost" size="sm">
-                <Link href="/notes">My Notes</Link>
-              </Button>
               <Button asChild variant="outline" size="sm">
                 <Link href="/logout">Logout</Link>
               </Button>
@@ -46,7 +43,7 @@ export default function Header() {
               )}
               {pathname !== "/register" && (
                 <Button asChild variant="outline" size="sm">
-                  <Link href="/register">Register</Link>
+                  <Link href="/pages/auth/register">Register</Link>
                 </Button>
               )}
             </div>
